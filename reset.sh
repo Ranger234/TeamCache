@@ -1,7 +1,7 @@
 #!/usr/bin/bash
-datei1="/kunden/homepages/1/d88040495/htdocs/OpenCaching/OC15A33/cachcode1.txt"
-datei2="/kunden/homepages/1/d88040495/htdocs/OpenCaching/OC15A33/cachcode2.txt"
-datei3="/kunden/homepages/1/d88040495/htdocs/OpenCaching/OC15A33/zeitstempel.txt"
+datei1="cachcode1.txt"
+datei2="cachcode2.txt"
+datei3="zeitstempel.txt"
 jetzt=$(date "+%s")
 if test -f ; then
     alter1=$(date -r $datei1 "+%s")
