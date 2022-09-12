@@ -1,5 +1,5 @@
 <?php
-// Session starten
+// Session starten und auf 180 Sekunden begrenzen
 session_set_cookie_params(180,"/");
 session_start();
 
@@ -9,7 +9,7 @@ $east = "EYY° YY.YYY";
 $koords = $nord . " " . $east;
 
 // Überprüft Eingabewerte für $textfeld auf Korrektheit.
-function validate_textfeld($val) {
+function pruefe_textfeld($val) {
    $msg = "";
    if (strlen($val) < 4)
       $msg .= "Die Eingabe muss mindestens 4 Zeichen lang sein.\n";
@@ -26,7 +26,7 @@ function validate_textfeld($val) {
 // gemerkt.
 $valid = true;
 if (isset($_REQUEST["textfeld"])) {
-   $error["textfeld"] = validate_textfeld($_REQUEST["textfeld"]);
+   $error["textfeld"] = pruefe_textfeld($_REQUEST["textfeld"]);
    if ($error["textfeld"] != "")
       $valid = false;
 }
