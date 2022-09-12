@@ -1,11 +1,23 @@
 #!/usr/bin/bash
+#
+# Da das löschen der Dateien im Script nur funktioniert, wenn
+# der Vorgang ordnungsgemäß abgeschlossen wird, lösche ich die 
+# Dateien via cron-job (alle 5 Minuten)
+#
 datei1="cachcode1.txt"
 datei2="cachcode2.txt"
 datei3="zeitstempel.txt"
+
+# Aktuelle Zeit feststellen (epoch)
 jetzt=$(date "+%s")
-if test -f ; then
+
+# Wenn die Datei existiert.
+if test -f $datei1; then
+    # dann Zeitstempel der Datei in alter1 (epoch)
     alter1=$(date -r $datei1 "+%s")
+    # alter der Datei in Sekunden 
     unter1=$(( jetzt - alter1 ))
+    # wenn die Datei älter als 180 Sekunden dann löschen
     if [ $unter1 -gt 180 ];
        then 
            rm $datei1
