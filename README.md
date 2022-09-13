@@ -11,10 +11,10 @@ Schaffen die Spieler es die Codes innehalb der vorgesehenen Zeit einzugeben, bek
 
 ## Vorschläge zur Verbesserung
 ### Dynamische QR-Codes 
-QR-Codes die zeitgesteuert zu variablen Links verweisen könnten sehr vie schwieriger erraten werden. Damit würde es nötig tatsächlich mit zwei Teams vor Ort zu sein und die Codes einzugeben.
+QR-Codes die zeitgesteuert zu variablen Links verweisen könnten sehr viel schwieriger erraten werden. Damit würde es nötig tatsächlich mit zwei Teams vor Ort zu sein und die Codes einzugeben.
 
 ### Dynamische Passworter
-Zeitgesteuerte 2FA Codes, die es erschweren die Mechanik zu umgehen
+Zeitgesteuerte 2FA Codes, die es erschweren die Mechanik zu umgehen.
 
 ### Abschluß der Aufgabe
-Verlinken auf eine neue Seite, die beiden Parteien die Final-Koordinaten (gleichzeitig) anzeigt und so eine Art Wettrennen möglich macht
+Verlinken auf eine neue Seite, die beiden Parteien die Final-Koordinaten (gleichzeitig) anzeigt und so eine Art Wettrennen möglich macht.
