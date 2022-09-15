@@ -1,6 +1,6 @@
 <?php
 // Session starten und auf 180 Sekunden begrenzen
-session_set_cookie_params(180,"/");
+session_set_cookie_params(180, "/");
 session_start();
 
 // Finalkoordinaten festlegen
@@ -30,13 +30,13 @@ if (isset($_REQUEST["textfeld"])) {
    if ($error["textfeld"] != "")
       $valid = false;
 }
+
 // gesamter Pfad zum Dateinamen kann noetig sein
 $cachecode1 = 'cachcode1.txt';
 $cachecode2 = 'cachcode2.txt';
 $ok1 = 'ok1.txt';
 $ok2 = 'ok2.txt';
 $zeitstempel = 'zeitstempel.txt';
-//$loesung = 'loesung.txt';
 
 // existiert der Zeitstempel bereits?
 if (! file_exists($zeitstempel)) {
@@ -55,7 +55,6 @@ if(time() - filemtime($cachecode2) >= 180) { unlink($cachecode2); }
 if(time() - filemtime($ok1) >= 180) { unlink($ok1); }
 if(time() - filemtime($ok2) >= 180) { unlink($ok2); }
 if(time() - filemtime($zeitstempel) >= 180) { unlink($zeitstempel); }
-if(time() - filemtime($loesung) >= 180) { unlink($loesung); }
 
 // Webseite generieren und für spieler ein oder zwei einrichten
 echo '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>OC15A33</title><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></head><body>';
@@ -65,8 +64,8 @@ echo '<p>Du bist - lass mich nachsehen ...</p>';
 
 // wenn die Datei cachecode1 existiert und wir nicht in der Session von Spieler 1 sind, sind wir Spieler 2
 if ((file_exists($cachecode1)) && ($_SESSION['spieler1'] != 1)) {
-     // Werte für Spieler 2 aus den Dateien einlesen
-     $file_handle = fopen($cachecode2, 'r');
+    // Werte für Spieler 2 aus den Dateien einlesen
+    $file_handle = fopen($cachecode2, 'r');
     $dercode2 = fread($file_handle, filesize($cachecode2));
     fclose($file_handle);
 
@@ -106,43 +105,35 @@ if ((file_exists($cachecode1)) && ($_SESSION['spieler1'] != 1)) {
     if ( ! $dercode1 ) { echo '<p>Dein Code ist: ' . $_SESSION['dercode1']  . '</p>'; }
      
 }
+
 echo '<p id="spielzeit"></p>';
 date_default_timezone_set("Europe/Berlin"); 
 if (! file_exists($zeitstempel)) {
     $_SESSION['zeit'] = strtotime('+120 seconds');
 }
 ?>
- <script language="javascript" type="text/javascript">
-       
+<script type="text/javascript">
     var countDownDate = <?php echo $_SESSION['zeit'] ?> * 1000;
     
     var now = <?php echo time() ?> * 1000;
 
-    
     var x = setInterval(function() {
 
-        
         now = now + 1000;
 
-        
         var distance = countDownDate - now;
 
-        
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        
         document.getElementById("spielzeit").innerHTML = minutes + "m " + seconds + "s ";
 
-                 
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("spielzeit").innerHTML = "Zeit abgelaufen";
         }
     }, 1000);
-    </script>
+</script>
 <form action="<?php print $_SERVER["PHP_SELF"]; ?>">
 <input type="text"
        name="textfeld"
@@ -157,80 +148,77 @@ if ($error["textfeld"] != "")
        value="Absenden">
 </form>
 <hr>
-<?php if ($valid and isset($_REQUEST["do_form_x"])) { 
-// verschiedene Prüfungen ob die Zeit nicht abgelaufen ist und ob die codes richtig eingegeben wurden
+<?php
+
+if ($valid and isset($_REQUEST["do_form_x"])) {
+    // verschiedene Prüfungen ob die Zeit nicht abgelaufen ist und ob die codes richtig eingegeben wurden
     $file_handle = fopen($zeitstempel, 'r');
     $diezeit = fread($file_handle, filesize($zeitstempel));
     fclose($file_handle);
 
-        $differenz = $diezeit - time();
+    $differenz = $diezeit - time();
 
+    if ($_SESSION['spieler1'] == 1) {
+        if ($differenz <= 0) {
+            echo '<p>Zeit abgelaufen</p>';
+        } else {
+            if ($_REQUEST["textfeld"] == $_SESSION['dercode1']) {
+                echo "<p>Spieler 1 richtig</p>";
 
-if ($_SESSION['spieler1'] == 1) {
-    if ($differenz <= 0) {
-	echo '<p>Zeit abgelaufen</p>';	
+                $file_handle = fopen($ok1, 'w');
+                fwrite($file_handle, "Spieler1");
+                fclose($file_handle);
+
+                if (file_exists($ok2)) {
+                    echo "<p>Spieler 2 hat schon getippt</p>";
+                    echo "<p>Koordinaten:</p>";
+                    echo "<p>" . $nord . "</p>";
+                    echo "<p>" . $east . "</p>";
+                    unlink($cachecode1);
+                    unlink($cachecode2);
+                    unlink($ok1);
+                    unlink($ok2);
+                    unlink($zeitstempel);
+                    session_destroy();
+               } else {
+                    echo "<p>Warte auf Spieler 2</p>";
+               }
+            } else {
+                echo "Spieler 1 falsch";
+            }
+        }
+    } elseif ($_SESSION['spieler2'] == 2) {
+        if ($differenz <= 0) {
+	        echo '<p>Zeit abgelaufen</p>';
+        } else {
+            if ($_REQUEST["textfeld"] == $dercode2) {
+                echo "<p>Spieler 2 richtig</p>";
+
+                $file_handle = fopen($ok2, 'w');
+                fwrite($file_handle, "Spieler2");
+                fclose($file_handle);
+
+                if (file_exists($ok1)) {
+                    echo "<p>Spieler 1 hat schon getippt</p>";
+                    echo "<p>Koordinaten: </p>";
+                    echo "<p>" . $nord . "</p>";
+                    echo "<p>" . $east . "</p>";
+                    unlink($cachecode1);
+                    unlink($cachecode2);
+                    unlink($ok1);
+                    unlink($ok2);
+                    unlink($zeitstempel);
+                    session_destroy();
+                } else {
+                    echo "<p>Warte auf Spieler 1</p>";
+                }
+            } else {
+	            echo "Spieler 2 falsch";
+            }
+        }
     } else {
-    if ($_REQUEST["textfeld"] == $_SESSION['dercode1']) {
-	echo "<p>Spieler 1 richtig</p>";
-	
-	 $file_handle = fopen($ok1, 'w');
-       fwrite($file_handle, "Spieler1");
-       fclose($file_handle);
-
-       if (file_exists($ok2)) {
-        echo "<p>Spieler 2 hat schon getippt</p>";
-        echo "<p>Koordinaten:</p>";
-        echo "<p>" . $nord . "</p>";
-        echo "<p>" . $east . "</p>";
-        unlink($cachecode1);
-         unlink($cachecode2);
-         unlink($ok1);
-         unlink($ok2);
-         unlink($zeitstempel);
-        session_destroy();
-       } else {
-        echo "<p>Warte auf Spieler 2</p>";
-       }
-    } else {
-	echo "Spieler 1 falsch";
+        echo "Kein Spieler";
     }
 }
-} elseif ($_SESSION['spieler2'] == 2) {
-    if ($differenz <= 0) {
-	echo '<p>Zeit abgelaufen</p>';	
-    } else {
-    if ($_REQUEST["textfeld"] == $dercode2) {
-	echo "<p>Spieler 2 richtig</p>";
-
-	$file_handle = fopen($ok2, 'w');
-       fwrite($file_handle, "Spieler2");
-       fclose($file_handle);
-
-       if (file_exists($ok1)) {
-        echo "<p>Spieler 1 hat schon getippt</p>";
-        echo "<p>Koordinaten: </p>";
-        echo "<p>" . $nord . "</p>";
-        echo "<p>" . $east . "</p>";
-        unlink($cachecode1);
-         unlink($cachecode2);
-         unlink($ok1);
-         unlink($ok2);
-         unlink($zeitstempel);
-        session_destroy();
-       } else {
-        echo "<p>Warte auf Spieler 1</p>";
-       }
-    } else {
-	echo "Spieler 2 falsch";
-    }
-}
-} else {
-    echo "Kein Spieler";
-}
-
-} ?>
-
-<?php
 
 echo '</body></html>';
-?>
