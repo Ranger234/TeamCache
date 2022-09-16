@@ -1,7 +1,9 @@
 <?php
-// Finalkoordinaten festlegen
-$nord = "NXX° XX.XXX";
-$east = "EYY° YY.YYY";
+// Finalkoordinaten einlesen
+//$nord = "NXX° XX.XXX";
+//$east = "EYY° YY.YYY";
+include 'coords.php';
+
 
 // gesamter Pfad zum Dateinamen kann noetig sein
 $cachecode1 = 'cachcode1.txt';
