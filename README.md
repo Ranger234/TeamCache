@@ -1,13 +1,8 @@
 # Einfaches Script für einen OpenCaching Teamcache
 Das Script funktioniert wenn der Vorgang wie vorgesehen abgeschlossen wird. Beim Abbruch oder Zeitüberschreitung bleiben die abgelegten codes und der Zeitstempel erhalten, diese werden dann via Crontab gelöscht
 
-## Was bisher funktioniert
-An zwei verschiedenen Orten befindet sich ein QR-Code, der einen (statischen) Link enthält. Dieser Link zeigt auf dieses PHP-Script. 
-
-Die Spieler müsssen einen vom Script generierten und als Datei abgelegten Code in das dafür vorgesehene Feld eingeben und ein einfaches HTML Formular absenden. Parallel wird ein Zeitstempel als Datei abgelegt.
-
-Schaffen die Spieler es die Codes innehalb der vorgesehenen Zeit einzugeben, bekommen sie GPS - Koordianten angezeigt.
-
+### PHP-Min Version 8.0
+Note that str_contains() function has been available since PHP 8.0.0
 
 ## Vorschläge zur Verbesserung
 ### Dynamische QR-Codes 
