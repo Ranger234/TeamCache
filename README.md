@@ -1,5 +1,8 @@
 # Einfaches Script für einen OpenCaching Teamcache
-Das Script funktioniert wenn der Vorgang wie vorgesehen abgeschlossen wird. Beim Abbruch oder Zeitüberschreitung bleiben die abgelegten codes und der Zeitstempel erhalten, diese werden dann via Crontab gelöscht
+Leg einen Cache mit 2 Startpunkten an, an denen je eine URL zu diesem Script zu finden ist (QR-Code, NFC oder was dir sonst so einfällt). Mach zudem ein Cache-Final, dessen Koordinaten du in der Datei coords.php ablegst.
+Die Spieler müssen jetzt gleichzeitig (innerhalb von 2 Minuten) die URL öffnen und einen 4-stelligen Code eingeben, dann bekommen sie die Final-Koordinaten.
+
+Viel Spaß beim legen und suchen
 
 ## Zur Vorbereitung
 
